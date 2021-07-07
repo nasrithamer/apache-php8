@@ -18,7 +18,7 @@
 
 Also there is some PHP extensions inspired from book ** <b>the fast track https://symfony.com/doc/current/the-fast-track/en/1-tools.html#php </b>**
 <p>
-intl, pdo_mysql, pdo_pgsql, xsl, amqp, gd, openssl, sodium, redis, curl, and zip.
+intl, xdebug, apcu, opcache, pdo_mysql, pdo_pgsql, xsl, amqp, gd, openssl, sodium, redis, curl, and zip.
 </p>
 
 

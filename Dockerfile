@@ -1,9 +1,3 @@
-#
-# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
-#
-# PLEASE DO NOT EDIT IT DIRECTLY.
-#
-
 FROM debian:buster-slim
 
 # prevent Debian's PHP packages from being installed
@@ -275,6 +269,8 @@ RUN docker-php-ext-enable sodium
 # Notice: graphviz is needed by workflow component (symfony) for command dump (svg, png ...)
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y wget git vim nano graphviz
+RUN git config --global user.email "you@example.com" \
+    &&  git config --global user.name "Your Name"
 # NodeJs version lts 14.x + npm 6.x
 RUN curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh \
     && bash nodesource_setup.sh \
@@ -324,6 +320,22 @@ RUN apt-get update && apt-get install -y \
         libzip-dev \
         zip \
   && docker-php-ext-install zip
+# OPCache
+RUN docker-php-ext-install opcache \
+    && docker-php-ext-enable opcache
+# Xdebug
+RUN pecl install xdebug \
+    && docker-php-ext-enable xdebug \
+    && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.remote_port=9001" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.remote_handler=dbgp" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.remote_connect_back=0" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.idekey=mertblog.net" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.remote_host=docker.for.mac.localhost" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+# APCU
+RUN pecl install apcu \
+    && docker-php-ext-enable apcu
 
 ## End Customized Section
 
